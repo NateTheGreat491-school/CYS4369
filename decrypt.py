@@ -4,6 +4,7 @@
 # Edited:   2026-10-28 21:09:10
 
 import string
+import math
 
 def reverse(string: str, key: None = None) -> str:
     return string[::-1]
@@ -22,3 +23,19 @@ def caesar(msg: str, shift: int = 0) -> str:
     )
 
     return msg.translate(table)
+
+def transposition(message, key):
+   numOfColumns = int(math.ceil(len(message) / float(key)))
+   numOfRows = key
+   numOfShadedBoxes = (numOfColumns * numOfRows) - len(message)
+   plaintext = [''] * numOfColumns
+   column = 0
+   row = 0
+   for symbol in message:
+      plaintext[column] += symbol
+      column += 1
+      if (column == numOfColumns) or (column == numOfColumns - 1 and
+                                row >= numOfRows - numOfShadedBoxes):
+         column = 0
+         row += 1
+   return ''.join(plaintext)

@@ -165,11 +165,11 @@ class CipherGUI:
 
         match (mode):
             case "Encrypt":
-                method: Object = encrypt
+                method: object = encrypt
             case "Decrypt":
-                method: Object = decrypt
+                method: object = decrypt
             case "Hack":
-                method: Object = hack
+                method: object = hack
 
         match cipher.lower():
             case "reverse":
@@ -182,7 +182,10 @@ class CipherGUI:
                     messagebox.showwarning("Warning", "Caesar Cipher expects an integer key.")
                 result = method.caesar(text_in, shift)
 
-            case "affine"|"matrix"|"one-time pad"|"substitution"|"transposition"|"wild":
+            case "transposition":
+                result = method.transposition(text_in, int(key_in))
+
+            case "affine"|"matrix"|"one-time pad"|"substitution"|"wild":
                 messagebox.showwarning("Notice", "Ciphers not available.")
 
             case _:

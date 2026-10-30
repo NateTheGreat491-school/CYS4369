@@ -22,3 +22,14 @@ def caesar(msg: str, shift: int = 0) -> str:
     )
 
     return msg.translate(table)
+
+def transposition(message, key):
+   ciphertext = [''] * key
+
+   for column in range(key):
+      currentIndex = column
+      while currentIndex < len(message):
+         ciphertext[column] += message[currentIndex]
+         currentIndex += key
+   return ''.join(ciphertext)
+
