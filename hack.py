@@ -4,6 +4,7 @@
 # Edited:   2026-10-28 22:04:54
 
 from langdetect import detect, DetectorFactory
+import math
 
 DetectorFactory.seed = 0
 COMMON_WORDS = {"the", "be", "to", "of", "and", "a", "in", 
@@ -21,8 +22,15 @@ def is_english(text: str) -> bool:
         if detect(text) != "en": return False
 
         words   = set(text.lower().split())
+        if not words:
+            return False
+
         matches = words.intersection(COMMON_WORDS)
 
+        if len(words) <= 2:
+            return True
+        if len(words) <= 4:
+            return len(matches) >= 1
         return len(matches) >= 2
 
     except Exception:
@@ -65,6 +73,31 @@ def transposition(msg: str, key: int) -> str:
 
     return msg
 
-def substitution(msg: str, key: int) -> str:
-    """ Brute force substitution cipher hack """
-    return msg
+def affine(msg: str, a: int, b: int, m: int = 26) -> str:
+    """ Brute force affine cipher hack """
+
+    possible_a = [a for a in range(1, 26) if math.gcd(a, 26) == 1] 
+    
+    results = []
+    for a in possible_a:
+        a_inv = pow(a, -1, 26)
+        
+        for b in range(26):
+            result = []
+                
+            for c in msg:
+                if c.isalpha():
+                    offset = ord('A') if c.isupper() else ord('a')
+                    x = ord(c) - offset
+                    y = (a_inv * (x-b)) % 26
+                    result.append(chr(y + offset))
+                else:
+                    result.append(c)
+
+            canidate = ''.join(result)
+            results.append(canidate)
+            if is_english(canidate):
+                return f"KEY: a={a}, b={b}\n\n{canidate}"
+        
+    return "Failed to find suitable english translation of this cipher.\n\n" + '\n'.join(results)
+

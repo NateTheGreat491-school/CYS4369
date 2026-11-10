@@ -65,6 +65,24 @@ class CipherGUI:
     def run(self) -> None:
         self._root.mainloop()
 
+    def _on_cipher_selection(self, event=None) -> None:
+            cipher = self._cipher_var.get().lower()
+            self._key_entry.delete(0, tk.END)
+
+            match cipher:
+                case "affine":
+                    self._key_entry.insert(0, "a, b")
+                case "caesar":
+                    self._key_entry.insert(0, "3")
+                case "transposition":
+                    self._key_entry.insert(0, "4")
+                case "substitution" | "matrix" | "one-time pad" | "wild":
+                    self._key_entry.insert(0, "key")
+                case "reverse":
+                    self._key_entry.insert(0, "")
+                case _:
+                    self._key_entry.insert(0, "")
+
     def _build_ui(self) -> None:
         # Main container with dark padding
         main_frame = tk.Frame(self._root, bg=BG_VOID, padx=15, pady=15)
@@ -97,6 +115,7 @@ class CipherGUI:
             cipher_frame, textvariable=self._cipher_var, values=options, state="readonly", font=FONT_MONO
         )
         cipher_dropdown.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        cipher_dropdown.bind('<<ComboboxSelected>>', self._on_cipher_selection)
 
         # 2. Input Fields Panel
         inputs_frame = ttk.LabelFrame(main_frame, text=" [ DATA STREAMS ] ", padding=12)
@@ -185,7 +204,14 @@ class CipherGUI:
             case "transposition":
                 result = method.transposition(text_in, int(key_in))
 
-            case "affine"|"matrix"|"one-time pad"|"substitution"|"wild":
+            case "affine":
+                key_lst = key_in.split(", ")
+                if len(key_lst) != 2:
+                    result = text_in
+                a, b = int(key_lst[0]), int(key_lst[1])
+                result = method.affine(text_in, a, b)
+
+            case "matrix"|"one-time pad"|"substitution"|"wild":
                 messagebox.showwarning("Notice", "Ciphers not available.")
 
             case _:

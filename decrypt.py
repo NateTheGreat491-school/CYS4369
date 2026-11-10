@@ -50,3 +50,17 @@ def transposition(msg: str, key: int) -> str:
     ]
 
     return ''.join(columns)
+
+def affine(msg: str, a: int, b: int, m: int = 26) -> str:
+    a_inv = pow(a, -1, m)
+    result = []
+
+    for c in msg:
+        if c.isalpha():
+            base = ord('A') if c.isupper() else ord('a')
+            x = ord(c) - base
+            y = (a_inv * (x - b)) % m
+            result.append(chr(y + base))
+        else:
+            result.append(c)
+    return ''.join(result)

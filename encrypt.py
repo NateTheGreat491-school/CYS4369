@@ -4,6 +4,7 @@
 # Edited:   2026-10-28 11:53:00
 
 import string
+import math
 
 def reverse(string: str, key: None = None) -> str:
     return string[::-1]
@@ -28,3 +29,16 @@ def transposition(msg: str, key: int) -> str:
         return msg
 
     return ''.join(msg[i::key] for i in range(key))
+
+def affine(msg: str, a: int, b: int,  m: int = 26) -> str:
+    result = []
+    for c in msg:
+        if c.isalpha():
+            base = ord('A') if c.isupper() else ord('a')
+            x = ord(c) - base
+            y = (a * x + b) % m
+            result.append(chr(y + base))
+        else:
+            result.append(c)
+    
+    return ''.join(result)
