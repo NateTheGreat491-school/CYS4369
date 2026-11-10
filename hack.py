@@ -11,6 +11,10 @@ COMMON_WORDS = {"the", "be", "to", "of", "and", "a", "in",
                 "with", "he", "she", "am", "I", "who", "what",
                 "when", "where", "why"}
 
+EN_LETTER_FREQ = list(x for x in "etaonrishdlfcmugypwbvkjxzq");
+EN_PAIR_LETTER_FREQ = list("th he an re er in on at nd st es en of te ed or ti hi as to".split(" "))
+EN_DOUBLE_LETTER_FREQ = list("ll ee ss oo tt ff rr nn pp cc".split(" "))
+
 def is_english(text: str) -> bool:
     try:
         
@@ -45,3 +49,22 @@ def caesar(msg: str, shift: int = 0) -> str:
             return f"KEY: {key}\n\n{decrypted_msg}"
 
     return "Failed to find suitable English translation of this cipher."
+
+def transposition(msg: str, key: int) -> str:
+    """ Brute force transposition hack """
+
+    # get total length of msg
+    # count all the letters present in msg & frequency
+    # include double letters and pair letters
+    # try to decode using all of that inforamtion
+    
+    normal: dict = dict(zip(EN_LETTER_FREQ, 0))
+
+    for c in msg:
+        normal[c] += 1
+
+    return msg
+
+def substitution(msg: str, key: int) -> str:
+    """ Brute force substitution cipher hack """
+    return msg
