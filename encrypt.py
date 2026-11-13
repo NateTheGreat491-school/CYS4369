@@ -42,3 +42,16 @@ def affine(msg: str, a: int, b: int,  m: int = 26) -> str:
             result.append(c)
     
     return ''.join(result)
+def substitution(msg: str, key: int) -> str:
+    SYMBOLS = 'abcdefghijklmnopqrstuvwxyz'
+
+    cipherText = ''
+
+    for symbol in msg:
+        if symbol in SYMBOLS:
+            symbolIndex = SYMBOLS.find(symbol)
+            cipherText = cipherText + key[symbolIndex]
+        else:
+            cipherText = cipherText + symbol
+
+    return cipherText

@@ -64,3 +64,20 @@ def affine(msg: str, a: int, b: int, m: int = 26) -> str:
         else:
             result.append(c)
     return ''.join(result)
+
+def substitution(msg: str, key: int) -> str:
+    SYMBOLS = 'abcdefghijklmnopqrstuvwxyz'
+    plainText = ''
+
+    for symbol in msg:
+        if symbol in key:
+            symbolIndex = key.find(symbol)
+            plainText = plainText + SYMBOLS[symbolIndex]
+        else:
+            plainText = plainText + symbol
+
+    return plainText
+
+
+
+

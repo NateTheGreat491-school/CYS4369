@@ -76,7 +76,9 @@ class CipherGUI:
                     self._key_entry.insert(0, "3")
                 case "transposition":
                     self._key_entry.insert(0, "4")
-                case "substitution" | "matrix" | "one-time pad" | "wild":
+                case "substitution":
+                    self._key_entry.insert(0, "lfwoayuisvkmnxpbdcrjtqeghz")
+                case "matrix" | "one-time pad" | "wild":
                     self._key_entry.insert(0, "key")
                 case "reverse":
                     self._key_entry.insert(0, "")
@@ -210,6 +212,9 @@ class CipherGUI:
                     result = text_in
                 a, b = int(key_lst[0]), int(key_lst[1])
                 result = method.affine(text_in, a, b)
+
+            case "substitution":
+                result = method.substitution(text_in, key_in)
 
             case "matrix"|"one-time pad"|"substitution"|"wild":
                 messagebox.showwarning("Notice", "Ciphers not available.")
