@@ -65,7 +65,7 @@ def affine(msg: str, a: int, b: int, m: int = 26) -> str:
             result.append(c)
     return ''.join(result)
 
-def substitution(msg: str, key: int) -> str:
+def substitution(msg: str, key: str) -> str:
     SYMBOLS = 'abcdefghijklmnopqrstuvwxyz'
     plainText = ''
 
@@ -75,6 +75,34 @@ def substitution(msg: str, key: int) -> str:
             plainText = plainText + SYMBOLS[symbolIndex]
         else:
             plainText = plainText + symbol
+
+    return plainText
+
+def OneTimePad(msg: str, key: str) -> str:
+    SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    # Get PlainText and Key
+    cipherText = msg.upper()
+    numCipher = len(cipherText)
+    key = key.upper()
+
+    # Set Up Variables
+    keyPos = 0  # position in the key that will be analyzed
+    numKey = len(key)  # length of key
+    numSym = len(SYMBOLS)  # number of recognized symbols
+    plainText = ''  # plain text initialized
+
+    # Decrypt
+    for symbol in cipherText:
+        if symbol in SYMBOLS:
+            symbolIndex = SYMBOLS.find(symbol)  # where is the current plain text character?
+            keyIndex = SYMBOLS.find(key[keyPos])  # where is the current key character?
+            plainIndex = symbolIndex - keyIndex  # compute cipher Index
+            plainIndex = plainIndex % numSym
+            plainText = plainText + SYMBOLS[plainIndex]
+        else:
+            plainText = plainText + symbol  # no change if not in symbols
+        keyPos += 1  # increment key
+        keyPos = keyPos % numKey
 
     return plainText
 

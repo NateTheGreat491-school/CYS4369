@@ -78,7 +78,9 @@ class CipherGUI:
                     self._key_entry.insert(0, "4")
                 case "substitution":
                     self._key_entry.insert(0, "lfwoayuisvkmnxpbdcrjtqeghz")
-                case "matrix" | "one-time pad" | "wild":
+                case "one-time pad":
+                    self._key_entry.insert(0, "key will be generated. paste to decrypt")
+                case "matrix" | "wild":
                     self._key_entry.insert(0, "key")
                 case "reverse":
                     self._key_entry.insert(0, "")
@@ -216,7 +218,10 @@ class CipherGUI:
             case "substitution":
                 result = method.substitution(text_in, key_in)
 
-            case "matrix"|"one-time pad"|"substitution"|"wild":
+            case "one-time pad":
+                result = method.OneTimePad(text_in, key_in)
+
+            case "matrix"|"substitution"|"wild":
                 messagebox.showwarning("Notice", "Ciphers not available.")
 
             case _:

@@ -5,6 +5,7 @@
 
 import string
 import math
+import secrets
 
 def reverse(string: str, key: None = None) -> str:
     return string[::-1]
@@ -54,4 +55,35 @@ def substitution(msg: str, key: int) -> str:
         else:
             cipherText = cipherText + symbol
 
+    return cipherText
+
+
+def OneTimePad(msg: str, k: str) -> str:
+    # Set Up Variables
+    plainText = msg.upper()
+    SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    key = ''
+    keyPos = 0  # position in the key that will be analyzed
+    cipherText = ''  # cipher text initialized
+    # Encrypt
+    numPlain = len(plainText)
+    for i in range(numPlain):
+        key += secrets.choice(SYMBOLS)
+
+    numKey = len(key)  # length of key
+    numSym = len(SYMBOLS)  # number of recognized symbols
+
+    for symbol in plainText:
+        if symbol in SYMBOLS:
+            symbolIndex = SYMBOLS.find(symbol)  # where is the current plain text character?
+            keyIndex = SYMBOLS.find(key[keyPos])  # where is the current key character?
+            cipherIndex = symbolIndex + keyIndex  # compute cipher Index
+            cipherIndex = cipherIndex % numSym
+            cipherText = cipherText + SYMBOLS[cipherIndex]
+        else:
+            cipherText = cipherText + symbol  # no change if not in symbols
+        keyPos += 1  # increment key
+        keyPos = keyPos % numKey
+    key = "\nKey: " + key
+    cipherText = cipherText + key
     return cipherText
