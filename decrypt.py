@@ -5,6 +5,9 @@
 
 import string
 import math
+import util
+
+from encrypt import matrix as encrypt_matrix
 
 def reverse(string: str, key: None = None) -> str:
     return string[::-1]
@@ -18,8 +21,7 @@ def caesar(msg: str, shift: int = 0) -> str:
     new_uppers: str = uppers[-shift:] + uppers[:-shift]
 
     table: dict = str.maketrans(
-        string.ascii_letters, 
-        new_lowers + new_uppers
+        string.ascii_letters, new_lowers + new_uppers
     )
 
     return msg.translate(table)
@@ -106,6 +108,10 @@ def OneTimePad(msg: str, key: str) -> str:
 
     return plainText
 
+def matrix(msg: str, key: list[list[int]] = util.DEFAULT_MATRIX_KEY) -> str:
+    inv_key = util.matrix_invmod(key)
+    if inv_key is None:
+        raise ValueError("Key matrix is not invertible mod 26!")
+    return encrypt_matrix(msg, inv_key)
 
-
-
+# EOF

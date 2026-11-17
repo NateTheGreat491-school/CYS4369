@@ -6,6 +6,7 @@
 import string
 import math
 import secrets
+import util
 
 def reverse(string: str, key: None = None) -> str:
     return string[::-1]
@@ -19,8 +20,7 @@ def caesar(msg: str, shift: int = 0) -> str:
     new_uppers: str = uppers[shift:] + uppers[:shift]
 
     table: dict = str.maketrans(
-        string.ascii_letters, 
-        new_lowers + new_uppers
+        string.ascii_letters, new_lowers + new_uppers
     )
 
     return msg.translate(table)
@@ -41,8 +41,9 @@ def affine(msg: str, a: int, b: int,  m: int = 26) -> str:
             result.append(chr(y + base))
         else:
             result.append(c)
-    
+
     return ''.join(result)
+
 def substitution(msg: str, key: int) -> str:
     SYMBOLS = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -87,3 +88,19 @@ def OneTimePad(msg: str, k: str) -> str:
     key = "\nKey: " + key
     cipherText = cipherText + key
     return cipherText
+
+def matrix(msg: str, key: list[list[int]]) -> str:
+    if key is None:
+        key = DEFAULT_MATRIX_KEY
+    key = util.matrix_mod(key)
+    n = len(key)
+
+    if any(len(row) != n for row in key):
+        raise ValueError("Key must be a square matrix")
+
+    nums = util.pad_to_block(util.text_to_numbers(msg), n)
+    ciphertext = []
+    for i in range(0, len(nums), n):
+        block = nums[i:i + n]
+        ciphertext.extend(util.matrix_vec_mul(key, block))
+    return util.numbers_to_text(ciphertext)

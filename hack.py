@@ -5,6 +5,8 @@
 
 from langdetect import detect, DetectorFactory
 import math
+import util
+from decrypt import matrix as decrypt_matrix
 
 DetectorFactory.seed = 0
 COMMON_WORDS = {"the", "be", "to", "of", "and", "a", "in", 
@@ -101,3 +103,5 @@ def affine(msg: str, a: int, b: int, m: int = 26) -> str:
         
     return "Failed to find suitable english translation of this cipher.\n\n" + '\n'.join(results)
 
+def matrix(msg: str, key: str) -> str:
+    return "Matrix hack not available. 3x3 search space too extensive."

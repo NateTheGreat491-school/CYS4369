@@ -9,6 +9,7 @@ from tkinter import ttk, messagebox
 import encrypt
 import decrypt
 import hack
+import util
 
 # --- THEME CONSTANTS (Hacker / Cyberpunk Palette) ---
 BG_VOID = "#090a0f"       # Deepest background
@@ -81,7 +82,7 @@ class CipherGUI:
                 case "one-time pad":
                     self._key_entry.insert(0, "key will be generated. paste to decrypt")
                 case "matrix" | "wild":
-                    self._key_entry.insert(0, "key")
+                    self._key_entry.insert(0, "<delete/DEFAULT || abc:0..25/> a b c | a b c | a b c")
                 case "reverse":
                     self._key_entry.insert(0, "")
                 case _:
@@ -220,6 +221,14 @@ class CipherGUI:
 
             case "one-time pad":
                 result = method.OneTimePad(text_in, key_in)
+
+            case "matrix":
+                if key_in in ["DEFAULT", ""]:
+                    matrix = util.DEFAULT_MATRIX_KEY
+                else:
+                    txt_rows = key_in.split(" | ")
+                    matrix = [[int(a), int(b), int(c)] for a,b,c in r.split(" ") for r in txt_rows]
+                result = method.matrix(text_in, matrix)
 
             case "matrix"|"substitution"|"wild":
                 messagebox.showwarning("Notice", "Ciphers not available.")
