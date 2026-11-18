@@ -104,3 +104,25 @@ def matrix(msg: str, key: list[list[int]]) -> str:
         block = nums[i:i + n]
         ciphertext.extend(util.matrix_vec_mul(key, block))
     return util.numbers_to_text(ciphertext)
+
+def DIY (msg: str, key: int) -> str:
+
+    if not msg or key <= 1:
+        return msg
+
+    msg = ''.join(msg[i::key] for i in range(key))
+
+    SYMBOLS = 'abcdefghijklmnopqrstuvwxyz'
+
+    cipherText = ''
+
+    key2 = 'xmgtaqhbzjwyrcnvksfeupodil'
+
+    for symbol in msg.lower():
+        if symbol in SYMBOLS:
+            symbolIndex = SYMBOLS.find(symbol)
+            cipherText = cipherText + key2[symbolIndex]
+        else:
+            cipherText = cipherText + symbol
+
+    return cipherText

@@ -81,6 +81,8 @@ class CipherGUI:
                     self._key_entry.insert(0, "lfwoayuisvkmnxpbdcrjtqeghz")
                 case "one-time pad":
                     self._key_entry.insert(0, "key will be generated. paste to decrypt")
+                case "DIY":
+                    self._key_entry.insert(0, "5")
                 case "matrix" | "wild":
                     self._key_entry.insert(0, "<delete/DEFAULT || abc:0..25/> a b c | a b c | a b c")
                 case "reverse":
@@ -113,7 +115,7 @@ class CipherGUI:
 
         options = [
             "Affine", "Caesar", "Matrix", "One-Time Pad",
-            "Reverse", "Substitution", "Transposition", "Wild"
+            "Reverse", "Substitution", "Transposition", "DIY", "Wild"
         ]
         
         cipher_dropdown = ttk.Combobox(
@@ -230,7 +232,10 @@ class CipherGUI:
                     matrix = [[int(a), int(b), int(c)] for a,b,c in r.split(" ") for r in txt_rows]
                 result = method.matrix(text_in, matrix)
 
-            case "matrix"|"substitution"|"wild":
+            case "DIY":
+                result = method.DIY(text_in, int(key_in))
+
+            case "matrix"|"wild":
                 messagebox.showwarning("Notice", "Ciphers not available.")
 
             case _:

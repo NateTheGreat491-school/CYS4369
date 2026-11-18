@@ -115,3 +115,45 @@ def matrix(msg: str, key: list[list[int]] = util.DEFAULT_MATRIX_KEY) -> str:
     return encrypt_matrix(msg, inv_key)
 
 # EOF
+def DIY (msg: str, key: int) -> str:
+
+    key2 = 'xmgtaqhbzjwyrcnvksfeupodil'
+    SYMBOLS = 'abcdefghijklmnopqrstuvwxyz'
+    plainText = ''
+
+    for symbol in msg:
+        if symbol in key2:
+            symbolIndex = key2.find(symbol)
+            plainText = plainText + SYMBOLS[symbolIndex]
+        else:
+            plainText = plainText + symbol
+
+    msg = plainText.lower()
+
+    if not msg or key <= 1:
+        return msg
+
+    msg_len: int     = len(msg)
+    num_columns: int = math.ceil(msg_len / key)
+    num_shaded: int  = (num_columns * key) - msg_len
+    full_rows: int   = key - num_shaded
+
+    rows = []
+    idx  = 0
+
+    for _ in range(full_rows):
+        rows.append(msg[idx : idx + num_columns])
+        idx += num_columns
+
+    for _ in range(num_shaded):
+        rows.append(msg[idx : idx + num_columns-1])
+        idx += num_columns-1
+
+    columns = [
+        ''.join(row[c] for row in rows if c < len(row))
+        for c in range(num_columns)
+    ]
+
+    return ''.join(columns)
+
+
