@@ -133,27 +133,27 @@ def DIY (msg: str, key: int) -> str:
     if not msg or key <= 1:
         return msg
 
-    msg_len: int     = len(msg)
-    num_columns: int = math.ceil(msg_len / key)
-    num_shaded: int  = (num_columns * key) - msg_len
-    full_rows: int   = key - num_shaded
+    # determine how many chars each slice got
+    lengths = [len(msg[i::key]) for i in range(key)]
 
-    rows = []
-    idx  = 0
+    slices = []
+    start = 0
 
-    for _ in range(full_rows):
-        rows.append(msg[idx : idx + num_columns])
-        idx += num_columns
+    for length in lengths:
+        slices.append(msg[start:start+length])
+        start += length
 
-    for _ in range(num_shaded):
-        rows.append(msg[idx : idx + num_columns-1])
-        idx += num_columns-1
+    plaintext = []
 
-    columns = [
-        ''.join(row[c] for row in rows if c < len(row))
-        for c in range(num_columns)
-    ]
+    max_len = max(lengths)
 
-    return ''.join(columns)
+    for i in range(max_len):
+        for k in range(key):
+            if i < len(slices[k]):
+                plaintext.append(slices[k][i])
+
+    return ''.join(plaintext)
+
+
 
 
