@@ -229,7 +229,12 @@ class CipherGUI:
                     matrix = util.DEFAULT_MATRIX_KEY
                 else:
                     txt_rows = key_in.split(" | ")
-                    matrix = [[int(a), int(b), int(c)] for a,b,c in r.split(" ") for r in txt_rows]
+                    
+                    matrix = []
+                    for row in txt_rows:
+                        a,b,c = row.split(" ")
+                        matrix.append([int(a), int(b), int(c)])
+
                 result = method.matrix(text_in, matrix)
 
             case "wild":
