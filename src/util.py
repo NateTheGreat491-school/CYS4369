@@ -5,6 +5,7 @@
 
 import math
 import string
+import random
 
 DEFAULT_MATRIX_KEY = [
     [ 6, 24,  1],
@@ -105,5 +106,27 @@ def matrix_equal(A, B) -> bool:
     if len(A) != len(B):
         return False
     return all(len(rowA) == len(rowB) and rowA == rowB for rowA, rowB in zip(A, B))
+
+# RANDOM TEXT GENERATION FOR TESTING
+# ---------------------------------------------
+def get_random_string(min_length: int, max_length: int, symbols: str) -> str:
+    if min_length > max_length:
+        raise ValueError("min_length must be less than max_length")
+    elif min_length < 0:
+        raise ValueError("min_length must be greater than 0")
+    if not symbols:
+        raise ValueError("Symbols must not be empty")
+
+    random_length = random.randint(min_length, max_length)
+    return "".join( random.choices(symbols, k=random_length) )
+
+def get_random_strlist(min_length: int, max_length: int, count: int, symbols: str) -> list[str]:
+    if count < 0:
+        raise ValueError("Count must be non-negative")
+
+    return [
+        get_random_string(min_length, max_length, symbols)
+        for _ in range(count)
+    ]
 
 # EOF
